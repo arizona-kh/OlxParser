@@ -1,3 +1,4 @@
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -19,24 +20,29 @@ public class OlxSearch {
 		WebDriver driver = new ChromeDriver();
 		driver.get("https://www.olx.ua/nedvizhimost/kvartiry-komnaty/arenda-kvartir-komnat/");
 		
-		// get all rows
+		// get all olx rows
 		List<WebElement> rows = driver.findElements(By.xpath("//table[@id='offers_table']/tbody//tr[@class='wrap']"));
-		// for every line store column
+		
+		// for each line store olx row
 		for (WebElement row : rows) {
 		    WebElement key = row.findElement(By.xpath("./td"));
 		    String keyOutput = key.getText();
 		    System.out.println(keyOutput);
 		    
-		    PrintWriter out = new PrintWriter(new FileWriter("test.txt", true));
-		    out.println(keyOutput + "\t");
-		    out.flush();
+		    // to add check if file exists
+		    // to add unit tests
+		    
+		    try {
+		    	PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("olx.txt", true)));
+			    out.println(keyOutput + "\n");
+			    out.flush();
+		    
+			} catch (IOException e) {
+				System.err.println(e);
+			}
 		}
-
 	
-		
-//		driver.close();
-//		driver.quit();
-
+		driver.close();
+		driver.quit();
 	}
-
 }
